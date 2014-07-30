@@ -6,6 +6,16 @@ http://www.paystation.co.nz
 
 Jeremy Shipman (jeremy@burnbright.net)
 
+## About
+
+Don't forget about the testing card details, and error cent values, as detailed here: http://www.paystation.co.nz/Paystation-Test-Site
+
+If you want to use dynamic return urls, you must set a HMAC key. This can be obtained from paystation.
+
+```
+	$gateway->setHmacKey('1a2b3b3g3g3k3k23k23hj235h235');
+```
+
 ## Merchant Session Uniqueness
 
 The required merchant session identifier is generated using php's
@@ -15,7 +25,7 @@ multiple hosts. You can override this by setting the `merchantSession`
 omnipay parameter:
 
 ```php
-	$response = $this->gateway->purchase(array(
+	$response = $gateway->purchase(array(
 		'amount' => '123.00',
 		'currency' => 'NZD',
 		'card' => array(...),

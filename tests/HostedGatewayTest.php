@@ -27,7 +27,7 @@ class HostedGatewayTest extends GatewayTestCase
 			'merchantSession' => '12345678'
 		))->send();
 
-		$this->assertTrue($response->isSuccessful());
+		$this->assertFalse($response->isSuccessful());
 		$this->assertTrue($response->isRedirect());
 		$this->assertEquals('023523354-01', $response->getTransactionReference());
 

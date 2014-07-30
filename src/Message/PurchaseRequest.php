@@ -45,6 +45,16 @@ class PurchaseRequest extends AbstractRequest
 		return $this->setParameter('merchantSession', $value);
 	}
 
+	public function getHmacKey()
+	{
+		return $this->getParameter('hmacKey');
+	}
+
+	public function setHmacKey($value)
+	{
+		return $this->setParameter('hmacKey', $value);
+	}	
+
 	protected function getBaseData()
 	{
 		$data = array();
@@ -62,7 +72,7 @@ class PurchaseRequest extends AbstractRequest
 
 	public function getData()
 	{
-		$this->validate('amount', 'card', 'paystationId', 'gatewayId');
+		$this->validate('amount', 'paystationId', 'gatewayId');
 		//required
 		$data = $this->getBaseData();
 		$data['pstn_am'] = $this->getAmountInteger();
@@ -70,31 +80,75 @@ class PurchaseRequest extends AbstractRequest
 		$data['pstn_cu'] = $this->getCurrency();
 		$data['pstn_tm'] = $this->getTestMode() ? 'T' : null;
 		$data['pstn_mc'] = $this->getCustomerDetails();
+		if($this->getHmacKey() && $this->getReturnUrl()){
+			$data['pstn_du'] = urlencode($this->getReturnUrl());
+		}
 
 		return $data;
 	}
 
+	public function send()
+	{
+		$postdata = http_build_query($this->getData());
+		$httpRequest = $this->httpClient->post($this->getEndPoint(), null, $postdata);
+		$httpResponse = $httpRequest->send();
+
+		return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
+	}
+
+	/**
+	 * Package up, and limit the customer details.
+	 * @return string customer details
+	 */
 	protected function getCustomerDetails()
 	{
 		$card = $this->getCard();
 		return substr(implode(array_filter(array(
 			$card->getName(),
 			$card->getCompany(),
+			$card->getEmail(),
+			$card->getPhone(),
 			$card->getAddress1(),
 			$card->getAddress2(),
 			$card->getCity(),
 			$card->getState(),
-			$card->getCountry(),
-			$card->getPhone(),
-			$card->getEmail(),
-
+			$card->getCountry()
 		)),","), 0, 255);
 	}
 
-	public function send()
-	{
-		$httpResponse = $this->httpClient->post($this->endpoint, null, $this->getData())->send();
-		return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
+	/**
+	 * Get the endpoint for this request.
+	 * Will include hmac data in GET query, if necessary.
+	 * @return string endpoint url
+	 */
+	protected function getEndPoint(){
+		$url = $this->endpoint;
+		if($this->getHmacKey()){
+			$qd = array();
+			$timestamp = time();
+			$qd['pstn_HMACTimestamp'] = $timestamp;
+			$qd['pstn_HMAC'] = $this->getHmac($timestamp);
+			$url .= '?'.http_build_query($qd);
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Generate the hmac hash to be passed in endpoint url
+	 *
+	 * Code modified from
+	 * @link http://www.paystation.co.nz/cms_show_download.php?id=69
+	 * @return string hmac
+	 */
+	protected function getHmac($timestamp, $postdata){
+		$authenticationKey = $this->getHmacKey();
+		$postBody = $this->postdata();
+		$hmacWebserviceName = 'paystation'; //webservice identification. 
+		$hmacBody = pack('a*',$timestamp).pack('a*',$hmacWebserviceName).pack('a*',$postBody);
+		$hmacHash = hash_hmac('sha512', $hmacBody, $authenticationKey);
+
+		return $hmacHash;
 	}
 
 }
