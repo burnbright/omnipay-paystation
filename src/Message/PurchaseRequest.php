@@ -6,6 +6,9 @@ use Omnipay\Common\Message\AbstractRequest;
 
 /**
  * Paystation Purchase Request
+ *
+ * Documentation:
+ * @link http://www.paystation.co.nz/cms_show_download.php?id=41
  */
 class PurchaseRequest extends AbstractRequest
 {
@@ -42,65 +45,56 @@ class PurchaseRequest extends AbstractRequest
 		return $this->setParameter('merchantSession', $value);
 	}
 
-	public function getTestMode()
-	{
-		return $this->getParameter('testMode');
-	}
-
-	public function setTestMode($value)
-	{
-		return $this->setParameter('testMode', $value);
-	}
-
-	/*
-	public function get()
-	{
-		return $this->getParameter('');
-	}
-
-	public function set($value)
-	{
-		return $this->setParameter('', $value);
-	}
-	*/
-
 	protected function getBaseData()
-    {
-        $data = array();
-        $data['paystation'] = '_empty';
-        $data['pstn_pi'] = $this->getPaystationId();
-        $data['pstn_gi'] = $this->getGatewayId();
-        $data['pstn_ms'] = $this->getMerchantSession();
+	{
+		$data = array();
+		$data['paystation'] = '_empty';
+		$data['pstn_pi'] = $this->getPaystationId();
+		$data['pstn_gi'] = $this->getGatewayId();
+		$merchantSession = $this->getMerchantSession();
+		if(!$merchantSession){
+			$merchantSession = uniqueid();
+		}
+		$data['pstn_ms'] = $merchantSession;
 
-        return $data;
-    }
+		return $data;
+	}
 
 	public function getData()
-    {
-        $this->validate('amount', 'card');
-        $this->getCard()->validate();
+	{
+		$this->validate('amount', 'card', 'paystationId', 'gatewayId', 'merchantSession');
+		//required
+		$data = $this->getBaseData();
+		$data['pstn_am'] = $this->getAmountInteger();
+		//optional
+		$data['pstn_cu'] = $this->getCurrency();
+		$data['pstn_tm'] = $this->getTestMode() ? 'T' : null;
+		$data['pstn_mc'] = $this->getCustomerDetails();
 
-        //required
-        $data = $this->getBaseData();
-        $data['pstn_af'] = 'dollars.cents';
-        $data['pstn_am'] = $this->getAmount();
+		return $data;
+	}
 
- 		//optional
-        //$data['pstn_cu'] = $this->getCurrency();
-        $data['pstn_tm'] = $this->getTestMode();
-        //$data['pstn_mr'] = $this->getMerchantReference();
-        //$data['pstn_ct'] = $this->getCardType();
-        //$data['pstn_mc'] = $this->getCustomerDetails();
-        //$data['pstn_mo'] = $this->getOrderDetails();
+	protected function getCustomerDetails()
+	{
+		$card = $this->getCard();
+		return substr(implode(array_filter(array(
+			$card->getName(),
+			$card->getCompany(),
+			$card->getAddress1(),
+			$card->getAddress2(),
+			$card->getCity(),
+			$card->getState(),
+			$card->getCountry(),
+			$card->getPhone(),
+			$card->getEmail(),
 
-        return $data;
-    }
+		)),","), 0, 255);
+	}
 
-    public function send()
-    {
-        $httpResponse = $this->httpClient->post($this->endpoint, null, $this->getData())->send();
-
-        return $this->response = new Response($this, $httpResponse->getBody());
-    }
+	public function send()
+	{
+		$httpResponse = $this->httpClient->post($this->endpoint, null, $this->getData())->send();
+		return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
+	}
 
 }

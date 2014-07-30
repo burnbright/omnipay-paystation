@@ -1,0 +1,18 @@
+HTTP/1.1 200 OK
+Content-Length: 591
+Content-Type: text/html
+X-Powered-By: ASP.NET
+Date: Tue, 29 Jul 2014 00:07:43 GMT
+
+<?xml version="1.0" standalone="yes"?>
+<InitiationRequestResponse>
+<Username>500600</Username>
+<RequestIP>111.222.222.111</RequestIP>
+<RequestUserAgent>Guzzle/3.9.1 curl/7.30.0 PHP/5.4.27</RequestUserAgent>
+<RequestHttpReferrer/>
+<PaymentRequestTime>2014-07-29 12:07:44</PaymentRequestTime>
+<DigitalOrder>https://payments.paystation.co.nz/hosted/?hk=uxFYtGKLzlC2aRfFbrfGaefFlDkr14GdoJPw43QetY</DigitalOrder>
+<DigitalOrderTime>2014-07-29 12:07:44</DigitalOrderTime>
+<DigitalReceiptTime/>
+<PaystationTransactionID>023523354-01</PaystationTransactionID>
+</InitiationRequestResponse>

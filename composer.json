@@ -15,7 +15,8 @@
     "authors": [
         {
             "name": "Jeremy Shipman",
-            "email": "jeremy@burnbright.net"
+            "email": "jeremy@burnbright.net",
+            "homepage": "http://jeremyshipman.com"
         }
     ],
     "autoload": {
