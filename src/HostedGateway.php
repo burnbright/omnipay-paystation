@@ -40,6 +40,16 @@ class HostedGateway extends AbstractGateway
 		return $this->setParameter('gatewayId', $value);
 	}
 
+	public function getHmacKey()
+	{
+		return $this->getParameter('hmacKey');
+	}
+
+	public function setHmacKey($value)
+	{
+		return $this->setParameter('hmacKey', $value);
+	}
+
 	public function purchase(array $parameters = array())
 	{
 		return $this->createRequest('\Omnipay\Paystation\Message\PurchaseRequest', $parameters);

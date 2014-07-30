@@ -90,7 +90,7 @@ class PurchaseRequest extends AbstractRequest
 	public function send()
 	{
 		$postdata = http_build_query($this->getData());
-		$httpRequest = $this->httpClient->post($this->getEndPoint(), null, $postdata);
+		$httpRequest = $this->httpClient->post($this->getEndPoint($postdata), null, $postdata);
 		$httpResponse = $httpRequest->send();
 
 		return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
@@ -121,13 +121,13 @@ class PurchaseRequest extends AbstractRequest
 	 * Will include hmac data in GET query, if necessary.
 	 * @return string endpoint url
 	 */
-	protected function getEndPoint(){
+	protected function getEndPoint($postdata){
 		$url = $this->endpoint;
 		if($this->getHmacKey()){
 			$qd = array();
 			$timestamp = time();
 			$qd['pstn_HMACTimestamp'] = $timestamp;
-			$qd['pstn_HMAC'] = $this->getHmac($timestamp);
+			$qd['pstn_HMAC'] = $this->getHmac($timestamp, $postdata);
 			$url .= '?'.http_build_query($qd);
 		}
 
@@ -143,9 +143,8 @@ class PurchaseRequest extends AbstractRequest
 	 */
 	protected function getHmac($timestamp, $postdata){
 		$authenticationKey = $this->getHmacKey();
-		$postBody = $this->postdata();
 		$hmacWebserviceName = 'paystation'; //webservice identification. 
-		$hmacBody = pack('a*',$timestamp).pack('a*',$hmacWebserviceName).pack('a*',$postBody);
+		$hmacBody = pack('a*',$timestamp).pack('a*',$hmacWebserviceName).pack('a*',$postdata);
 		$hmacHash = hash_hmac('sha512', $hmacBody, $authenticationKey);
 
 		return $hmacHash;

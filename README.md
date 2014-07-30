@@ -43,6 +43,7 @@ Implement further paystation features:
  * on-site gateways
  * authorize/capture
  * tokenisation
+ * HMAC authentication for quick lookup
 
  * extra parameter configuration
  	* select currencies
