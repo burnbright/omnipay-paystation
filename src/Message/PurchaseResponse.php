@@ -6,11 +6,12 @@ use DOMDocument;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
  * Paystation Response
  */
-class PurchaseResponse extends AbstractResponse
+class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
 
 	public function __construct(RequestInterface $request, $data)
@@ -28,7 +29,7 @@ class PurchaseResponse extends AbstractResponse
 
 	public function isSuccessful()
 	{
-		return isset($this->data->PaystationTransactionID) && !isset($this->data->ec);
+		return false;
 	}
 
 	public function isRedirect()
@@ -51,11 +52,21 @@ class PurchaseResponse extends AbstractResponse
 		return isset($this->data->ec) ? (string)$this->data->ec : null;	
 	}
 
+    public function getRedirectMethod()
+    {
+        return 'GET';
+    }
+
 	public function getRedirectUrl()
 	{
 		if ($this->isRedirect()) {
 			return (string)$this->data->DigitalOrder;
 		}
 	}
+
+    public function getRedirectData()
+    {
+        return null;
+    }
 
 }

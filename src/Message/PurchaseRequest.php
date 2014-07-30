@@ -53,7 +53,7 @@ class PurchaseRequest extends AbstractRequest
 		$data['pstn_gi'] = $this->getGatewayId();
 		$merchantSession = $this->getMerchantSession();
 		if(!$merchantSession){
-			$merchantSession = uniqueid();
+			$merchantSession = uniqid();
 		}
 		$data['pstn_ms'] = $merchantSession;
 
@@ -62,7 +62,7 @@ class PurchaseRequest extends AbstractRequest
 
 	public function getData()
 	{
-		$this->validate('amount', 'card', 'paystationId', 'gatewayId', 'merchantSession');
+		$this->validate('amount', 'card', 'paystationId', 'gatewayId');
 		//required
 		$data = $this->getBaseData();
 		$data['pstn_am'] = $this->getAmountInteger();
