@@ -1,12 +1,10 @@
 # Omnipay: Paystation
 
+http://www.paystation.co.nz
+
 ## Author
 
 Jeremy Shipman (jeremy@burnbright.net)
-
-http://www.paystation.co.nz/
-
-Testing details: http://www.paystation.co.nz/Paystation-Test-Site
 
 ## Merchant Session Uniqueness
 
