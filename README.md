@@ -44,8 +44,8 @@ Implement further paystation features:
  * authorize/capture
  * tokenisation
  * HMAC authentication for quick lookup
-
  * extra parameter configuration
+
  	* select currencies
  	* card type
  	* customer details
