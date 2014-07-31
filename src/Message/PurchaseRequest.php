@@ -53,7 +53,7 @@ class PurchaseRequest extends AbstractRequest
     public function setHmacKey($value)
     {
         return $this->setParameter('hmacKey', $value);
-    }   
+    }
 
     protected function getBaseData()
     {
@@ -62,7 +62,7 @@ class PurchaseRequest extends AbstractRequest
         $data['pstn_pi'] = $this->getPaystationId();
         $data['pstn_gi'] = $this->getGatewayId();
         $merchantSession = $this->getMerchantSession();
-        if(!$merchantSession){
+        if (!$merchantSession) {
             $merchantSession = uniqid();
         }
         $data['pstn_ms'] = $merchantSession;
@@ -80,7 +80,7 @@ class PurchaseRequest extends AbstractRequest
         $data['pstn_cu'] = $this->getCurrency();
         $data['pstn_tm'] = $this->getTestMode() ? 'T' : null;
         $data['pstn_mc'] = $this->getCustomerDetails();
-        if($this->getHmacKey() && $this->getReturnUrl()){
+        if ($this->getHmacKey() && $this->getReturnUrl()) {
             $data['pstn_du'] = urlencode($this->getReturnUrl());
         }
 
@@ -113,7 +113,7 @@ class PurchaseRequest extends AbstractRequest
             $card->getCity(),
             $card->getState(),
             $card->getCountry()
-        )),","), 0, 255);
+        )), ","), 0, 255);
     }
 
     /**
@@ -121,9 +121,10 @@ class PurchaseRequest extends AbstractRequest
      * Will include hmac data in GET query, if necessary.
      * @return string endpoint url
      */
-    protected function getEndPoint($postdata){
+    protected function getEndPoint($postdata)
+    {
         $url = $this->endpoint;
-        if($this->getHmacKey()){
+        if ($this->getHmacKey()) {
             $qd = array();
             $timestamp = time();
             $qd['pstn_HMACTimestamp'] = $timestamp;
@@ -141,13 +142,13 @@ class PurchaseRequest extends AbstractRequest
      * @link http://www.paystation.co.nz/cms_show_download.php?id=69
      * @return string hmac
      */
-    protected function getHmac($timestamp, $postdata){
+    protected function getHmac($timestamp, $postdata)
+    {
         $authenticationKey = $this->getHmacKey();
-        $hmacWebserviceName = 'paystation'; //webservice identification. 
-        $hmacBody = pack('a*',$timestamp).pack('a*',$hmacWebserviceName).pack('a*',$postdata);
+        $hmacWebserviceName = 'paystation'; //webservice identification.
+        $hmacBody = pack('a*', $timestamp).pack('a*', $hmacWebserviceName).pack('a*', $postdata);
         $hmacHash = hash_hmac('sha512', $hmacBody, $authenticationKey);
 
         return $hmacHash;
     }
-
 }

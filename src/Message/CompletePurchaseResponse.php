@@ -40,17 +40,17 @@ class CompletePurchaseResponse extends AbstractResponse
 
     public function getCode()
     {
-        if(isset($this->data->LookupResponse->PaystationErrorCode)){
+        if (isset($this->data->LookupResponse->PaystationErrorCode)) {
             return (string)$this->data->LookupResponse->PaystationErrorCode;
         }
     }
 
     public function getMessage()
     {
-        if(isset($this->data->LookupResponse->PaystationErrorMessage)){
+        if (isset($this->data->LookupResponse->PaystationErrorMessage)) {
             return (string)$this->data->LookupResponse->PaystationErrorMessage;
         }
-        if(isset($this->data->LookupStatus->LookupMessage)){
+        if (isset($this->data->LookupStatus->LookupMessage)) {
             return (string)$this->data->LookupStatus->LookupMessage;
         }
     }

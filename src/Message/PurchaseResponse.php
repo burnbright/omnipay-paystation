@@ -49,7 +49,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
 
     public function getCode()
     {
-        return isset($this->data->ec) ? (string)$this->data->ec : null; 
+        return isset($this->data->ec) ? (string)$this->data->ec : null;
     }
 
     public function getRedirectMethod()
@@ -68,5 +68,4 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     {
         return null;
     }
-
 }

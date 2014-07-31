@@ -25,7 +25,7 @@ class CompletePurchaseRequest extends PurchaseRequest
         $ms = $query->get('ms'); //merchant session
         $am = $query->get('am'); //amount
         $futurepaytoken = $query->get('futurepaytoken');
-        if(!$ti){
+        if (!$ti) {
             throw new InvalidRequestException('Transaction reference is missing');
         }
         $data = array();
@@ -42,5 +42,4 @@ class CompletePurchaseRequest extends PurchaseRequest
         $httpResponse = $request->send();
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
-
 }

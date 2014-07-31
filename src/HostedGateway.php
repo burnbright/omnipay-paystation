@@ -59,5 +59,4 @@ class HostedGateway extends AbstractGateway
     {
         return $this->createRequest('\Omnipay\Paystation\Message\CompletePurchaseRequest', $parameters);
     }
-
 }
