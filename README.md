@@ -50,7 +50,7 @@ If you want to use dynamic return urls, you must set a HMAC key. This can be obt
 ## Merchant Session Uniqueness
 
 The required merchant session identifier is generated using php's
-[uniqueid](http://php.net/manual/en/function.uniqid.php) function.
+[uniqid](http://php.net/manual/en/function.uniqid.php) function.
 This may not be enough uniqueness if your system architecture has
 multiple hosts. You can override this by setting the `merchantSession`
 omnipay parameter:
