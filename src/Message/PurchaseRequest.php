@@ -80,6 +80,7 @@ class PurchaseRequest extends AbstractRequest
         $data['pstn_cu'] = $this->getCurrency();
         $data['pstn_tm'] = $this->getTestMode() ? 'T' : null;
         $data['pstn_mc'] = $this->getCustomerDetails();
+        $data['pstn_mr'] = $this->getTransactionId();
         if ($this->getHmacKey() && $this->getReturnUrl()) {
             $data['pstn_du'] = urlencode($this->getReturnUrl());
         }
