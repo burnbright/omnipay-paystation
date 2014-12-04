@@ -54,4 +54,24 @@ class CompletePurchaseResponse extends AbstractResponse
             return (string)$this->data->LookupStatus->LookupMessage;
         }
     }
+    
+    // additional information fields
+    public function getCardNumber()      { return $this->get_response_field('CardNo'); }
+    public function getCardExpiryYear()  { return $this->convert_expiry_date($this->get_response_field('CardExpiry'))[0]; }
+    public function getCardExpiryMonth() { return $this->convert_expiry_date($this->get_response_field('CardExpiry'))[1]; }
+    public function getCardholderName()  { return $this->get_response_field('CardholderName'); }
+    public function getCardType()        { return $this->get_response_field('CardType'); }
+    
+    private function get_response_field($key) {
+        return $this->isSuccessful() && isset($this->data->LookupResponse->$key)
+            ? (string) $this->data->LookupResponse->$key
+            : null;
+    }
+    
+    private function convert_expiry_date($yymm) {
+        if (preg_match('/([0-9]{2})([0-9]{2})/', $yymm, $match))
+            return [(int) $match[1], (int) $match[2]];
+        else
+            return [null, null];
+    }
 }
