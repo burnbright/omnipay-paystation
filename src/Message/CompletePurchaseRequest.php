@@ -3,7 +3,7 @@
 namespace Omnipay\Paystation\Message;
 
 use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
  * Paystation Complete Purchase Request
