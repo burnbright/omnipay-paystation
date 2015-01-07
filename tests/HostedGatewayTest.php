@@ -1,7 +1,7 @@
 <?php
 namespace Omnipay\Paystation;
 
-use Omnipay\GatewayTestCase;
+use Omnipay\Tests\GatewayTestCase;
 use Omnipay\Common\CreditCard;
 
 class HostedGatewayTest extends GatewayTestCase
@@ -54,7 +54,7 @@ class HostedGatewayTest extends GatewayTestCase
 
     public function testPurchaseInvalid()
     {
-        $this->setMockHttpResponse('InvalidResponse.txt');
+        $this->setMockHttpResponse('PurchaseRequestInvalid.txt');
 
         $this->setExpectedException('Omnipay\Common\Exception\InvalidResponseException');
         $response = $this->gateway->purchase(array(
@@ -103,6 +103,22 @@ class HostedGatewayTest extends GatewayTestCase
         $this->assertEquals("4", $response->getCode());
         $this->assertEquals("Expired Card", $response->getMessage());
         $this->assertEquals("0040852604-01", $response->getTransactionReference());
+    }
+    
+    public function testCompletePurchaseInvalid()
+    {
+        $this->getHttpRequest()
+            ->query->replace(
+                array(
+                    'ti' => '9999999999-99',
+                    'ec' => '0',
+                    'am' => '1000'
+                )
+            );
+        $this->setMockHttpResponse('CompletePurchaseRequestInvalid.txt');
+
+        $this->setExpectedException('Omnipay\Common\Exception\InvalidResponseException');
+        $response = $this->gateway->completePurchase()->send();
     }
     
 }
