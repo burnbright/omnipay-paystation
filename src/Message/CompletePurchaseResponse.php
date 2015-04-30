@@ -30,6 +30,11 @@ class CompletePurchaseResponse extends AbstractResponse
         }
     }
 
+    public function isPending()
+    {
+        return false;
+    }
+
     public function isSuccessful()
     {
         return $this->getCode() === "0";

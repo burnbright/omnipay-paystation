@@ -27,6 +27,7 @@ class HostedGatewayTest extends GatewayTestCase
             'merchantSession' => '12345678'
         ))->send();
 
+        $this->assertFalse($response->isPending());
         $this->assertFalse($response->isSuccessful());
         $this->assertTrue($response->isRedirect());
         $this->assertEquals('023523354-01', $response->getTransactionReference());
@@ -47,6 +48,7 @@ class HostedGatewayTest extends GatewayTestCase
             'card' => $this->getValidCard(),
             'merchantSession' => '12345678'
         ))->send();
+        $this->assertFalse($response->isPending());
         $this->assertFalse($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertEquals('10', $response->getCode());
@@ -79,6 +81,7 @@ class HostedGatewayTest extends GatewayTestCase
         $response = $this->gateway->completePurchase()->send();
 
         //reponse assertions
+        $this->assertFalse($response->isPending());
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals("00", $response->getCode());
         $this->assertEquals("Transaction successful", $response->getMessage());
@@ -99,6 +102,7 @@ class HostedGatewayTest extends GatewayTestCase
             );
         $this->setMockHttpResponse('CompletePurchaseRequestFailure.txt');
         $response = $this->gateway->completePurchase()->send();
+        $this->assertFalse($response->isPending());
         $this->assertFalse($response->isSuccessful());
         $this->assertEquals("4", $response->getCode());
         $this->assertEquals("Expired Card", $response->getMessage());
