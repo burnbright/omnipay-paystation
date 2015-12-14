@@ -35,9 +35,10 @@ The following gateways are provided by this package:
 
 * Paystation_Hosted
 
-For general usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
+For general omnipay usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
 repository.
 
+**NOTE: Make sure you get your server's IP address whitelisted by paystation.**
 
 Testing card details, and error cent values, are detailed here: http://www.paystation.co.nz/Paystation-Test-Site
 
