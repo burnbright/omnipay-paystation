@@ -17,6 +17,11 @@
             "name": "Jeremy Shipman",
             "email": "jeremy@burnbright.net",
             "homepage": "http://jeremyshipman.com"
+        },
+        {
+            "name": "Leith Caldwell",
+            "email": "leith@codedruids.com",
+            "homepage": "http://codedruids.com"
         }
     ],
     "autoload": {

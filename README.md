@@ -19,7 +19,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "burnbright/omnipay-paystation": "~1.0"
+        "burnbright/omnipay-paystation": "~2.0"
     }
 }
 ```
