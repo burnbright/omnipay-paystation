@@ -1,0 +1,43 @@
+HTTP/1.1 200 OK
+Content-Length: 1310
+Content-Type: text/html
+X-Powered-By: ASP.NET
+Date: Tue, 29 Jul 2014 00:17:30 GMT
+
+<?xml version="1.0" standalone="yes"?>
+<response>
+<ec>10</ec>
+<em>The amount specified is too high or low and exceeds the limits set by this merchant</em>
+<ti>0020345583-01</ti>
+<ct/>
+<merchant_ref/>
+<tm>P</tm>
+<MerchantSession>0.99830200 1406593048</MerchantSession>
+<UsedAcquirerMerchantID>861368</UsedAcquirerMerchantID>
+<TransactionID>0020345583-01</TransactionID>
+<PurchaseAmount>-1000</PurchaseAmount>
+<Locale>en</Locale>
+<ReturnReceiptNumber/>
+<ShoppingTransactionNumber/>
+<AcqResponseCode/>
+<QSIResponseCode/>
+<CSCResultCode/>
+<AVSResultCode/>
+<TransactionTime>2014-07-29 12:17:29</TransactionTime>
+<PaystationErrorCode>10</PaystationErrorCode>
+<PaystationErrorMessage>The amount specified is too high or low and exceeds the limits set by this merchant</PaystationErrorMessage>
+<PaystationExtendedErrorMessage/>
+<MerchantReference/>
+<TransactionProcess>purchase</TransactionProcess>
+<TransactionMode>P</TransactionMode>
+<BatchNumber/>
+<AuthorizeID/>
+<Cardtype/>
+<Username>606851</Username>
+<RequestIP>111.222.222.111</RequestIP>
+<RequestUserAgent>Guzzle/3.9.1 curl/7.30.0 PHP/5.4.27</RequestUserAgent>
+<RequestHttpReferrer/>
+<PaymentRequestTime>2014-07-29 12:17:29</PaymentRequestTime>
+<DigitalOrderTime/>
+<DigitalReceiptTime/>
+</response>

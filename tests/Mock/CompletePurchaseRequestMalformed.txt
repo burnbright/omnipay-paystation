@@ -1,0 +1,8 @@
+HTTP/1.1 200 OK
+Content-Length: 1310
+Content-Type: text/html
+X-Powered-By: ASP.NET
+Date: Tue, 29 Jul 2014 00:17:30 GMT
+
+<?xml version="1.0" standalone="yes"?>
+<PaystationQuickLookup><LookupStatus><LookupCode>00</LookupCode><LookupMessage>Successful</LookupMessage><RemoteHostAddress>111.222.222.111</RemoteHostAddress></LookupStatus><LookupResponse></LookupResponse></PaystationQuickLookup>

@@ -2,8 +2,7 @@
 
 namespace Omnipay\Paystation\Message;
 
-use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
  * Paystation Complete Purchase Request
@@ -35,11 +34,12 @@ class CompletePurchaseRequest extends PurchaseRequest
         return $data;
     }
 
-    public function send()
+    public function sendData($data)
     {
-        $request = $this->httpClient->get($this->endpoint);
-        $request->getQuery()->replace($this->getData());
-        $httpResponse = $request->send();
+        $postdata = http_build_query($data);
+        $httpRequest = $this->httpClient->post($this->getEndPoint($postdata), null, $data);
+        $httpResponse = $httpRequest->send();
+
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
 }
