@@ -188,7 +188,7 @@ class HostedGatewayTest extends GatewayTestCase
 
         $this->setExpectedException(
             'Omnipay\Common\Exception\InvalidResponseException',
-            'The transaction could not be found on the payment servers.'
+            'Access denied for user [123456]'
         );
         $response = $this->gateway->completePurchase()->send();
     }

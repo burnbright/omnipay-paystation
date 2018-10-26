@@ -22,8 +22,8 @@ class CompletePurchaseResponse extends AbstractResponse
         $this->data = simplexml_import_dom($responseDom);
 
         if (!isset($this->data->LookupResponse)) {
-            if (isset($this->data->response_error)) {
-                throw new InvalidResponseException($this->data->response_error);
+            if (isset($this->data->LookupStatus->LookupMessage)) {
+                throw new InvalidResponseException($this->data->LookupStatus->LookupMessage);
             } else {
                 throw new InvalidResponseException;
             }
