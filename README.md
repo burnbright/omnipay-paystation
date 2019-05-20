@@ -4,6 +4,8 @@
 
 http://www.paystation.co.nz
 
+API Docs: https://docs.paystation.co.nz/
+
 [![Build Status](https://travis-ci.org/burnbright/omnipay-paystation.png?branch=master)](https://travis-ci.org/burnbright/omnipay-paystation)
 [![Latest Stable Version](https://poser.pugx.org/burnbright/omnipay-paystation/version.png)](https://packagist.org/packages/burnbright/omnipay-paystation)
 [![Total Downloads](https://poser.pugx.org/burnbright/omnipay-paystation/d/total.png)](https://packagist.org/packages/burnbright/omnipay-paystation)
