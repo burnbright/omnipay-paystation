@@ -40,7 +40,7 @@ The following gateways are provided by this package:
 For general omnipay usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
 repository.
 
-**NOTE: Make sure you get your server's IP address whitelisted by paystation.**
+**NOTE**: Paystation's back-end system supports both [IP whitelisting](https://en.wikipedia.org/wiki/Whitelisting) and [HMAC key](https://en.wikipedia.org/wiki/HMAC) usage. Be aware of which features are enabled on the account you're using.
 
 Testing card details, and error cent values, are detailed here: http://www.paystation.co.nz/Paystation-Test-Site
 
