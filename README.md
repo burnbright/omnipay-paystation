@@ -38,14 +38,19 @@ The following gateways are provided by this package:
 For general usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
 repository.
 
-
 Testing card details, and error cent values, are detailed here: http://www.paystation.co.nz/Paystation-Test-Site
 
-If you want to use dynamic return urls, you must set a HMAC key. This can be obtained from paystation.
+## Extra Security with HMAC and/or IP Whitelisting
 
+Paystation's back-end system supports both [IP whitelisting](https://en.wikipedia.org/wiki/Whitelisting) and [HMAC key](https://en.wikipedia.org/wiki/HMAC) usage. Be aware of which features are enabled on the account you're using.
+
+If you want to use dynamic return urls, you must set a HMAC key. This can be obtained from paystation. Setting an hmac key will cause an hmac hash to be sent with each request.
+
+```php
+$gateway->setHmacKey('1a2b3b3g3g3k3k23k23hj235h235');
 ```
-	$gateway->setHmacKey('1a2b3b3g3g3k3k23k23hj235h235');
-```
+
+More info: https://docs.paystation.co.nz/#hmac-authentication
 
 ## Merchant Session Uniqueness
 
@@ -56,13 +61,12 @@ multiple hosts. You can override this by setting the `merchantSession`
 omnipay parameter:
 
 ```php
-	$response = $gateway->purchase(array(
-		'amount' => '123.00',
-		'currency' => 'NZD',
-		'card' => array(...),
-		'merchantSession' => uniqueid($hostidentifier) //here
-	))->send();
-
+$response = $gateway->purchase(array(
+  'amount' => '123.00',
+  'currency' => 'NZD',
+  'card' => array(...),
+  'merchantSession' => uniqueid($hostidentifier) //here
+))->send();
 ```
 
 ## Support

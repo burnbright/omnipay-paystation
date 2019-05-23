@@ -140,7 +140,7 @@ class PurchaseRequest extends AbstractRequest
      * Generate the hmac hash to be passed in endpoint url
      *
      * Code modified from
-     * @link http://www.paystation.co.nz/cms_show_download.php?id=69
+     * @link https://docs.paystation.co.nz/#hmac-authentication
      * @return string hmac
      */
     protected function getHmac($timestamp, $postdata)

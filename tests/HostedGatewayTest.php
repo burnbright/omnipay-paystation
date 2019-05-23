@@ -104,5 +104,4 @@ class HostedGatewayTest extends GatewayTestCase
         $this->assertEquals("Expired Card", $response->getMessage());
         $this->assertEquals("0040852604-01", $response->getTransactionReference());
     }
-    
 }

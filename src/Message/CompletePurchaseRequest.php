@@ -9,7 +9,7 @@ use Omnipay\Common\Exception\InvalidResponseException;
  * Paystation Complete Purchase Request
  *
  * uses quicklookup service, as described here:
- * @link http://www.paystation.co.nz/cms_show_download.php?id=38
+ * @link https://docs.paystation.co.nz/#quick-lookup
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
@@ -37,9 +37,12 @@ class CompletePurchaseRequest extends PurchaseRequest
 
     public function send()
     {
-        $request = $this->httpClient->get($this->endpoint);
-        $request->getQuery()->replace($this->getData());
-        $httpResponse = $request->send();
+
+        $data = $this->getData();
+        $postdata = http_build_query($data);
+        $httpRequest = $this->httpClient->post($this->getEndPoint($postdata), null, $data);
+        $httpResponse = $httpRequest->send();
+        
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
 }
