@@ -104,7 +104,7 @@ class PurchaseRequest extends AbstractRequest
     protected function getCustomerDetails()
     {
         $card = $this->getCard();
-        return substr(implode(array_filter(array(
+        return substr(implode(",", array_filter(array(
             $card->getName(),
             $card->getCompany(),
             $card->getEmail(),
@@ -114,7 +114,7 @@ class PurchaseRequest extends AbstractRequest
             $card->getCity(),
             $card->getState(),
             $card->getCountry()
-        )), ","), 0, 255);
+        ))), 0, 255);
     }
 
     /**
