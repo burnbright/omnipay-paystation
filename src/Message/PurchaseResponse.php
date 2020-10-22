@@ -3,10 +3,10 @@
 namespace Omnipay\Paystation\Message;
 
 use DOMDocument;
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Paystation\Message\PurchaseRequest;
 
 /**
  * Paystation Response
@@ -14,7 +14,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
 
-    public function __construct(RequestInterface $request, $data)
+    public function __construct(PurchaseRequest $request, $data)
     {
         $this->request = $request;
 

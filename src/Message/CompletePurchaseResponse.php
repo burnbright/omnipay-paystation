@@ -3,9 +3,9 @@
 namespace Omnipay\Paystation\Message;
 
 use DOMDocument;
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\AbstractResponse;
+use Omnipay\Paystation\Message\CompletePurchaseRequest;
 
 /**
  * Paystation Complete Purchase Response
@@ -13,7 +13,7 @@ use Omnipay\Common\Exception\InvalidResponseException;
 class CompletePurchaseResponse extends AbstractResponse
 {
 
-    public function __construct(RequestInterface $request, $data)
+    public function __construct(CompletePurchaseRequest $request, $data)
     {
         $this->request = $request;
 
