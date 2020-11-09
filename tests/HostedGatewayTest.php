@@ -16,7 +16,8 @@ class HostedGatewayTest extends GatewayTestCase
         $this->gateway->setGatewayId('FOOBAR');
     }
 
-    public function testSetup() {
+    public function testSetup()
+    {
         $this->gateway->setHmacKey('abc');
 
         $this->assertEquals('Paystation', $this->gateway->getName());
@@ -101,7 +102,7 @@ class HostedGatewayTest extends GatewayTestCase
     {
         $this->setMockHttpResponse('PurchaseRequestFailure.txt');
 
-        $this->setExpectedException('Omnipay\Common\Exception\InvalidRequestException');
+        $this->expectException('Omnipay\Common\Exception\InvalidRequestException');
         $response = $this->gateway->purchase(array(
             'amount' => '-12345.00',
             'currency' => 'NZD',
@@ -118,7 +119,7 @@ class HostedGatewayTest extends GatewayTestCase
     {
         $this->setMockHttpResponse('PurchaseResponseInvalid.txt');
 
-        $this->setExpectedException('Omnipay\Common\Exception\InvalidResponseException');
+        $this->expectException('Omnipay\Common\Exception\InvalidResponseException');
         $response = $this->gateway->purchase(array(
             'amount' => '12345.00',
             'currency' => 'NZD',
@@ -186,10 +187,8 @@ class HostedGatewayTest extends GatewayTestCase
             );
         $this->setMockHttpResponse('CompletePurchaseRequestInvalid.txt');
 
-        $this->setExpectedException(
-            'Omnipay\Common\Exception\InvalidResponseException',
-            'Access denied for user [123456]'
-        );
+        $this->expectException('Omnipay\Common\Exception\InvalidResponseException');
+        $this->expectExceptionMessage('Access denied for user [123456]');
         $response = $this->gateway->completePurchase()->send();
     }
 
@@ -244,10 +243,9 @@ class HostedGatewayTest extends GatewayTestCase
             );
         $this->setMockHttpResponse('PurchaseRequestInvalid.txt');
 
-        $this->setExpectedException(
-            'Omnipay\Common\Exception\InvalidResponseException',
-            'Invalid response from payment gateway' // default message
-        );
+        $this->expectException('Omnipay\Common\Exception\InvalidResponseException');
+        // default message
+        $this->expectExceptionMessage('Invalid response from payment gateway');
         $response = $this->gateway->completePurchase()->send();
     }
 
@@ -263,7 +261,7 @@ class HostedGatewayTest extends GatewayTestCase
             );
         $this->setMockHttpResponse('CompletePurchaseRequestInvalid.txt');
 
-        $this->setExpectedException('Omnipay\Common\Exception\InvalidRequestException');
+        $this->expectException('Omnipay\Common\Exception\InvalidRequestException');
         $response = $this->gateway->completePurchase()->send();
     }
 }

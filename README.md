@@ -11,7 +11,7 @@ API Docs: https://docs.paystation.co.nz/
 [![Total Downloads](https://poser.pugx.org/burnbright/omnipay-paystation/d/total.png)](https://packagist.org/packages/burnbright/omnipay-paystation)
 
 [Omnipay](https://github.com/omnipay/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements Paystation support for Omnipay.
+processing library for PHP 5.6+. This package implements Paystation support for Omnipay.
 
 ## Installation
 
@@ -21,7 +21,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "burnbright/omnipay-paystation": "~2.0"
+        "burnbright/omnipay-paystation": "~3.0"
     }
 }
 ```

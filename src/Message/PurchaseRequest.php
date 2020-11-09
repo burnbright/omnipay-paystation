@@ -91,10 +91,9 @@ class PurchaseRequest extends AbstractRequest
     public function sendData($data)
     {
         $postdata = http_build_query($data);
-        $httpRequest = $this->httpClient->post($this->getEndPoint($postdata), null, $postdata);
-        $httpResponse = $httpRequest->send();
+        $httpResponse = $this->httpClient->request('POST', $this->getEndPoint($postdata), [], $postdata);
 
-        return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
+        return $this->response = new PurchaseResponse($this, $httpResponse->getBody()->getContents());
     }
 
     /**
