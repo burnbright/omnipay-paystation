@@ -1,8 +1,15 @@
 <?php
 namespace Omnipay\Paystation;
 
+use Exception;
+use GuzzleHttp\Psr7\Message;
+use GuzzleHttp\Psr7\ServerRequest;
 use Omnipay\Tests\GatewayTestCase;
 use Omnipay\Common\CreditCard;
+use Omnipay\Common\Message\NotificationInterface;
+use ReflectionObject;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class HostedGatewayTest extends GatewayTestCase
 {
@@ -24,6 +31,7 @@ class HostedGatewayTest extends GatewayTestCase
         $this->assertEquals('500600', $this->gateway->getPaystationId());
         $this->assertEquals('FOOBAR', $this->gateway->getGatewayId());
         $this->assertEquals('abc', $this->gateway->getHmacKey());
+        $this->assertNull($this->gateway->getTestMode());
     }
 
     public function testPurchaseSuccess()
@@ -80,15 +88,25 @@ class HostedGatewayTest extends GatewayTestCase
 
         $this->setMockHttpResponse('PurchaseRequestBadHmac.txt');
 
+        $this->gateway->setTestMode(true);
+
         $request = $this->gateway->purchase(array(
             'amount' => '1.00',
             'currency' => 'NZD',
             'card' => $this->getValidCard(),
-            'merchantSession' => '',              // tests uniqid() merchantSession assignment
-            'returnUrl' => 'http://example.com'   // tests $data['pstn_du'] assignment
+            'merchantSession' => '',
+            'returnUrl' => 'http://example.com',
+            'notifyUrl' => 'http://example.net',
         ));
         $this->assertEquals('abc', $request->getHmacKey());
         $this->assertEquals('http://example.com', $request->getReturnUrl());
+        $this->assertEquals('http://example.net', $request->getNotifyUrl());
+        $data = $request->getData();
+        // tests uniqid() merchantSession assignment
+        $this->assertNotEquals('', $data['pstn_ms']);
+        $this->assertEquals('T', $data['pstn_tm']);
+        $this->assertEquals('http%3A%2F%2Fexample.com', $data['pstn_du']);
+        $this->assertEquals('http%3A%2F%2Fexample.net', $data['pstn_dp']);
 
         $response = $request->send();
         $this->assertFalse($response->isPending());
@@ -263,5 +281,120 @@ class HostedGatewayTest extends GatewayTestCase
 
         $this->expectException('Omnipay\Common\Exception\InvalidRequestException');
         $response = $this->gateway->completePurchase()->send();
+    }
+
+    public function testAcceptNotificationSuccess()
+    {
+        $httpRequest = $this->setMockHttpRequest('AcceptNotificationSuccess.txt');
+        $gateway = new HostedGateway($this->getHttpClient(), $httpRequest);
+        $notification = $gateway->acceptNotification();
+
+        // NotificationInterface methods
+        $this->assertSame('0000743943-01', $notification->getTransactionReference());
+        $this->assertSame(NotificationInterface::STATUS_COMPLETED, $notification->getTransactionStatus());
+        $this->assertNull($notification->getMessage());
+
+        // ResponseInterface methods
+        $response = $notification->send();
+        $this->assertSame($notification, $response);
+        $this->assertSame($notification, $response->getRequest());
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertFalse($response->isCancelled());
+        $this->assertSame('0', $response->getCode());
+
+        $this->assertSame('MC', $notification->getCardType());
+    }
+
+    public function testAcceptNotificationFailure()
+    {
+        $httpRequest = $this->setMockHttpRequest('AcceptNotificationFailure.txt');
+        $gateway = new HostedGateway($this->getHttpClient(), $httpRequest);
+        $notification = $gateway->acceptNotification();
+
+        // NotificationInterface methods
+        $this->assertSame('0000743943-02', $notification->getTransactionReference());
+        $this->assertSame(NotificationInterface::STATUS_FAILED, $notification->getTransactionStatus());
+        $this->assertNull($notification->getMessage());
+
+        // ResponseInterface methods
+        $response = $notification->send();
+        $this->assertFalse($response->isSuccessful());
+        $this->assertSame('4', $response->getCode());
+    }
+
+    public function testAcceptNotificationPending()
+    {
+        $httpRequest = $this->setMockHttpRequest('AcceptNotificationPending.txt');
+        $gateway = new HostedGateway($this->getHttpClient(), $httpRequest);
+        $notification = $gateway->acceptNotification();
+
+        // NotificationInterface methods
+        $this->assertSame('0000743943-03', $notification->getTransactionReference());
+        $this->assertSame(NotificationInterface::STATUS_PENDING, $notification->getTransactionStatus());
+        $this->assertNull($notification->getMessage());
+    }
+
+    public function testAcceptNotificationError()
+    {
+        $httpRequest = $this->setMockHttpRequest('AcceptNotificationError.txt');
+        $gateway = new HostedGateway($this->getHttpClient(), $httpRequest);
+        $notification = $gateway->acceptNotification();
+
+        // NotificationInterface methods
+        $this->assertSame('', $notification->getTransactionReference());
+        $this->assertSame(NotificationInterface::STATUS_FAILED, $notification->getTransactionStatus());
+        $this->assertNull($notification->getMessage());
+
+        // ResponseInterface methods
+        $response = $notification->send();
+        $this->assertNull($response->getCode());
+        
+        $this->assertNull($notification->getCardType());
+    }
+
+    public function testAcceptNotificationMalfomed()
+    {
+        $httpRequest = $this->setMockHttpRequest('AcceptNotificationMalformed.txt');
+        $gateway = new HostedGateway($this->getHttpClient(), $httpRequest);
+        $this->expectException('Omnipay\Common\Exception\InvalidRequestException');
+        $notification = $gateway->acceptNotification();
+    }
+
+    /**
+     * Parses a saved raw request file into a new HTTP request object
+     *
+     * Initial file parsing adapted from TestCase::getMockHttpResponse()
+     *
+     * @param string $path  The request file
+     *
+     * @return HttpRequest  The new request
+     */
+    protected function setMockHttpRequest($path)
+    {
+        $ref = new ReflectionObject($this);
+        $dir = dirname($ref->getFileName());
+        // if mock file doesn't exist, check parent directory
+        if (file_exists($dir.'/Mock/'.$path)) {
+            $raw = file_get_contents($dir.'/Mock/'.$path);
+        } elseif (file_exists($dir.'/../Mock/'.$path)) {
+            $raw = file_get_contents($dir.'/../Mock/'.$path);
+        } else {
+            throw new Exception("Cannot open '{$path}'");
+        }
+
+        $guzzleRequest = Message::parseRequest($raw);
+        // PSR-bridge requires a ServerRequestInterface
+        $guzzleServerRequest = new ServerRequest(
+            $guzzleRequest->getMethod(),
+            $guzzleRequest->getUri(),
+            $guzzleRequest->getHeaders(),
+            $guzzleRequest->getBody(),
+            $guzzleRequest->getProtocolVersion(),
+            $_SERVER
+        );
+
+        $httpFoundationFactory = new HttpFoundationFactory();
+        return $httpFoundationFactory->createRequest($guzzleServerRequest);
     }
 }

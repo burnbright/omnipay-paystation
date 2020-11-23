@@ -1,0 +1,43 @@
+POST http://yourmerchantwebsite.com/txnWebHook HTTP/1.1
+Content-Type: application/xml; charset=utf-8
+Content-Length: 827
+Expect: 100-continue
+Proxy-Connection: Keep-Alive
+
+<?xml version="1.0" standalone="yes"?>
+<PaystationPaymentVerification>
+  <Username>123456</Username>
+  <MerchantSession>1168475644.8</MerchantSession>
+  <UsedAcquirerMerchantID>123456</UsedAcquirerMerchantID>
+  <TransactionID>0000743943-01</TransactionID>
+  <PurchaseAmount>7500</PurchaseAmount>
+  <Locale>en</Locale>
+  <ReturnReceiptNumber>000000000165</ReturnReceiptNumber>
+  <ShoppingTransactionNumber>195</ShoppingTransactionNumber>
+  <AcqResponseCode>00</AcqResponseCode>
+  <QSIResponseCode>0</QSIResponseCode>
+  <CSCResultCode>U</CSCResultCode>
+  <AVSResultCode>U</AVSResultCode>
+  <TransactionTime>2017-01-11 13:40:33</TransactionTime>
+  <PaystationErrorCode>0</PaystationErrorCode>
+  <Authentication>
+    <auth_Type/>
+    <auth_Status/>
+    <auth_SecurityLevel/>
+    <auth_HashToken/>
+    <auth_3DSID/>
+    <auth_3DSElectronicCommerceIndicator/>
+    <auth_3DSEnrolled/>
+    <auth_3DSStatus/>
+  </Authentication>
+  <BatchNumber>20070111</BatchNumber>
+  <AuthorizeID>R81194</AuthorizeID>
+  <Cardtype>MC</Cardtype>
+  <CustomerIP>222.152.4.143</CustomerIP>
+  <CustomerUserAgent>Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)</CustomerUserAgent>
+  <PaymentRequestTime>2017-01-11 13:39:09</PaymentRequestTime>
+  <PaymentResponseTime>2017-01-11 13:40:33</PaymentResponseTime>
+  <UserAdditionalVars>
+    <txn_mode>Liv</txn_mode>
+  </UserAdditionalVars>
+</PaystationPaymentVerification>
