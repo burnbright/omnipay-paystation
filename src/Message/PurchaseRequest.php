@@ -81,8 +81,13 @@ class PurchaseRequest extends AbstractRequest
         $data['pstn_tm'] = $this->getTestMode() ? 'T' : null;
         $data['pstn_mc'] = $this->getCustomerDetails();
         $data['pstn_mr'] = $this->getTransactionId();
-        if ($this->getHmacKey() && $this->getReturnUrl()) {
-            $data['pstn_du'] = urlencode($this->getReturnUrl());
+        if ($this->getHmacKey()) {
+            if ($this->getReturnUrl()) {
+                $data['pstn_du'] = urlencode($this->getReturnUrl());
+            }
+            if ($this->getNotifyUrl()) {
+                $data['pstn_dp'] = urlencode($this->getNotifyUrl());
+            }
         }
 
         return $data;
