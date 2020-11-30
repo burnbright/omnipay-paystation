@@ -7,6 +7,9 @@ http://www.paystation.co.nz
 API Docs: https://docs.paystation.co.nz/
 
 [![Build Status](https://travis-ci.org/burnbright/omnipay-paystation.png?branch=master)](https://travis-ci.org/burnbright/omnipay-paystation)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/burnbright/omnipay-paystation.svg?style=flat)](https://scrutinizer-ci.com/g/burnbright/omnipay-paystation/code-structure)
+[![Code Quality](https://img.shields.io/scrutinizer/g/burnbright/omnipay-paystation.svg?style=flat)](https://scrutinizer-ci.com/g/burnbright/omnipay-paystation/?branch=master)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 [![Latest Stable Version](https://poser.pugx.org/burnbright/omnipay-paystation/version.png)](https://packagist.org/packages/burnbright/omnipay-paystation)
 [![Total Downloads](https://poser.pugx.org/burnbright/omnipay-paystation/d/total.png)](https://packagist.org/packages/burnbright/omnipay-paystation)
 
