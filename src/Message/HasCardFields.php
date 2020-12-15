@@ -43,6 +43,10 @@ trait HasCardFields
         return $type;
     }
 
+    /**
+     * @param string $key  Field to look for in the response (case-sensitive)
+     * @return null|string  Value if it's present in the response, null if it's not
+     */
     protected function getResponseField($key)
     {
         if (!$this->isSuccessful()) {
@@ -52,6 +56,10 @@ trait HasCardFields
         return isset($lookup->$key) ? (string) $lookup->$key : null;
     }
 
+    /**
+     * @param string $yymm  Expiry date in "yymm" format
+     * @return int[]|null[]  Array with two elements, year and month
+     */
     protected function convertExpiryDate($yymm)
     {
         if (preg_match('/([0-9]{2})([0-9]{2})/', $yymm, $match)) {
