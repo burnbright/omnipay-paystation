@@ -10,6 +10,8 @@ trait HasCardFields
     /** @var string|null  The property of $this->data to look up response fields by, or null if directly on $this->data */
     protected $lookupField;
 
+    abstract public function isSuccessful();
+
     public function getCardNumber()
     {
         return $this->getResponseField('CardNo');
