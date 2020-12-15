@@ -20,6 +20,13 @@ Proxy-Connection: Keep-Alive
   <AVSResultCode>U</AVSResultCode>
   <TransactionTime>2017-01-11 13:40:33</TransactionTime>
   <PaystationErrorCode>0</PaystationErrorCode>
+  <PaystationErrorMessage>Transaction successful</PaystationErrorMessage>
+  <MerchantReference>1168475644.8</MerchantReference>
+  <CardNo>498765XXXXXXX769</CardNo>
+  <CardExpiry>2105</CardExpiry>
+  <CardholderName>Tester</CardholderName>
+  <TransactionProcess>purchase</TransactionProcess>
+  <TransactionMode>T</TransactionMode>
   <Authentication>
     <auth_Type/>
     <auth_Status/>

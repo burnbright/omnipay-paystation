@@ -12,9 +12,11 @@ use Omnipay\Paystation\Message\CompletePurchaseRequest;
  */
 class CompletePurchaseResponse extends AbstractResponse
 {
+    use HasCardFields;
 
     public function __construct(CompletePurchaseRequest $request, $data)
     {
+        $this->lookupField = 'LookupResponse';
         $this->request = $request;
 
         $responseDom = new DOMDocument;
@@ -61,50 +63,6 @@ class CompletePurchaseResponse extends AbstractResponse
         }
         if (isset($this->data->LookupStatus->LookupMessage)) {
             return (string)$this->data->LookupStatus->LookupMessage;
-        }
-    }
-
-    // additional information fields
-    public function getCardNumber()
-    {
-        return $this->getResponseField('CardNo');
-    }
-
-    public function getCardExpiryYear()
-    {
-        $expiry = $this->convertExpiryDate($this->getResponseField('CardExpiry'));
-        return $expiry[0];
-    }
-
-    public function getCardExpiryMonth()
-    {
-        $expiry = $this->convertExpiryDate($this->getResponseField('CardExpiry'));
-        return $expiry[1];
-    }
-
-    public function getCardholderName()
-    {
-        return $this->getResponseField('CardholderName');
-    }
-
-    public function getCardType()
-    {
-        return $this->getResponseField('CardType');
-    }
-
-    private function getResponseField($key)
-    {
-        return $this->isSuccessful() && isset($this->data->LookupResponse->$key)
-            ? (string) $this->data->LookupResponse->$key
-            : null;
-    }
-
-    private function convertExpiryDate($yymm)
-    {
-        if (preg_match('/([0-9]{2})([0-9]{2})/', $yymm, $match)) {
-            return array((int) $match[1], (int) $match[2]);
-        } else {
-            return array(null, null);
         }
     }
 }

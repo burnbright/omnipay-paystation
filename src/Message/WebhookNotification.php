@@ -18,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
  */
 class WebhookNotification extends AbstractRequest implements NotificationInterface, ResponseInterface
 {
+    use HasCardFields;
+
     /**
      * The data contained in the response.
      *
@@ -149,15 +151,5 @@ class WebhookNotification extends AbstractRequest implements NotificationInterfa
     public function getCode()
     {
         return isset($this->data->PaystationErrorCode) ? (string)$this->data->PaystationErrorCode : null;
-    }
-
-    /**
-     * Get the card type if available.
-     *
-     * @return null|string
-     */
-    public function getCardType()
-    {
-        return isset($this->data->Cardtype) ? (string)$this->data->Cardtype : null;
     }
 }
